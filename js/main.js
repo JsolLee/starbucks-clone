@@ -23,7 +23,7 @@ searchInputEl.addEventListener("blur", () => {
    스크롤 내리면 특정 시점에서 badge가 사라지도록*/
 const badgeEl = document.querySelector('header .badges');
 /* 페이지 스크롤에 영향을 받는 요소들을 검색 */
-const toTopEl = document.querySelector("#to-top");
+const toTopEl = document.querySelector('#to-top');
 
 //스크롤은 윈도우에서 발생하는것이다.(뷰포트)
 /* lodash : 인기 라이브러리 중 하나 함수가 자주 호출되는 것을 방지하기 위하여
@@ -50,10 +50,22 @@ window.addEventListener('scroll', _.throttle(() => {
         gsap.to(toTopEl, .2, { x:0})
     } else {
         gsap.to(badgeEl, .6, { opacity: 1, display: 'block' });
-        //상단으로 스크르롤 버튼 t숨기기
+        //상단으로 스크르롤 버튼 숨기기
         gsap.to(toTopEl, .2, { x:100})
     }
 }, 300))
+// 상단으로 스크롤 버튼을 클릭하면,
+toTopEl.addEventListener('click', _.throttle(()=>{
+    gsap.to(window, .7, {
+        scrollTo : 0
+    })
+}))
+// starbucks-original-code
+// toTopEl.addEventListener('click', function(){
+//     gsap.to(window, .7, {
+//         scrollTo : 0
+//     })
+// })
 
 /* Visual Image를 순차적으로 나타나게 하는 기능
    이미지가 순차적으로 나타낼 수 있고 애니메이션이 자연스럽게 나올 수 있도록 */
@@ -142,7 +154,7 @@ function rand(min, max){
 // 애니메이션을 줄 함수 (첫번째 이미지에 대한 접근자, 딜레이, 사이즈)
 function floatingObject(selector, delay, size) {
     // gsap.to(요소, 지속시간, 옵션)
-    gsap.to(selector, 1, {
+    gsap.to(selector, rand(1.5, 2.5), {
         y:size,
         repeat:-1, //무한반복
         yoyo : true, // 요요처럼 한 번 재생된 애니메이션을 반복함
@@ -153,7 +165,6 @@ function floatingObject(selector, delay, size) {
         ease : Power1.easeInOut
     })
 }
-
 
 floatingObject('.floating1', 1, 15);
 floatingObject('.floating2', .5, 15);
@@ -178,5 +189,9 @@ spyEls.forEach(function (spyEl) {
     .setClassToggle(spyEl, 'show') // 요소가 화면에 보이면 show 클래스 추가
     .addTo(new ScrollMagic.Controller()) // 컨트롤러에 장면을 할당(필수!)
 })
+
+/* 올해가 몇 년도 인지 계산 */
+const thisYear = document.querySelector('.this-year');
+thisYear.textContent = new Date().getFullYear();
 
 
